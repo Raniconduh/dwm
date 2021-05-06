@@ -1,0 +1,12 @@
+diff --git a/dwm.c b/dwm.c
+index b0b3466..67758bd 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -2145,6 +2147,7 @@ main(int argc, char *argv[])
+ 		die("pledge");
+ #endif /* __OpenBSD__ */
+ 	scan();
++	(void)(system(startup)+1); // run startup script
+ 	run();
+ 	cleanup();
+ 	XCloseDisplay(dpy);
