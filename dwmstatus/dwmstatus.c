@@ -75,16 +75,14 @@ main(void)
 	for (;;sleep(1)) {
 		time = mktimes("%a %b %d %I:%M %p");
 
-		//status = smprintf("%s",
-		//		 time);
-		status = time;
+		status = smprintf(" %s", time);
 
 		// draw status to screen
 		XStoreName(dpy, DefaultRootWindow(dpy), status);
 		XSync(dpy, False);
 
 		free(time);
-		//free(status);
+		free(status);
 	}
 
 	XCloseDisplay(dpy);

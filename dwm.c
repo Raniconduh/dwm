@@ -1120,7 +1120,7 @@ monocle(Monitor *m)
 		if (ISVISIBLE(c))
 			n++;
 	if (n > 0) /* override layout symbol */
-		snprintf(m->ltsymbol, sizeof m->ltsymbol, "[%d]", n);
+		snprintf(m->ltsymbol, sizeof m->ltsymbol, "Mono:%d", n);
 	for (c = nexttiled(m->clients); c; c = nexttiled(c->next))
 		resize(c, m->wx, m->wy, m->ww - 2 * c->bw, m->wh - 2 * c->bw, 0);
 }
@@ -2162,6 +2162,11 @@ main(int argc, char *argv[])
 #endif /* __OpenBSD__ */
 	scan();
 	(void)(system(startup)+1); // run startup script
+	{
+		char * args[] = {NULL};
+		pid_t pid = fork();
+		if (pid == 0) execvp("dwmstatus", args);
+	}
 	run();
 	cleanup();
 	XCloseDisplay(dpy);
