@@ -61,11 +61,23 @@ mktimes(char *fmt)
 }
 
 
+float
+getcputemp() {
+	FILE * fp = fopen("/sys/class/hwmon/hwmon2/temp1_input", "r");
+	char inp[20];
+	fgets(inp, 20, fp);
+	fclose(fp);
+	int iinp = atoi(inp);
+	return (float)iinp / 1000;
+}
+
+
 int
 main(void)
 {
 	char *status;
 	char *time;
+	float cputemp;
 
 	if (!(dpy = XOpenDisplay(NULL))) {
 		fprintf(stderr, "dwmstatus: cannot open display.\n");
@@ -74,8 +86,9 @@ main(void)
 
 	for (;;sleep(1)) {
 		time = mktimes("%a %b %d %I:%M %p");
+		cputemp = getcputemp();
 
-		status = smprintf(" %s", time);
+		status = smprintf(" CPU: %.1fC | %s", cputemp, time);
 
 		// draw status to screen
 		XStoreName(dpy, DefaultRootWindow(dpy), status);
